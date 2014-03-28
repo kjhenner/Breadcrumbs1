@@ -4,9 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class EditLabel extends Activity {
 	
@@ -14,7 +15,7 @@ public class EditLabel extends Activity {
 	
 	private DatabaseHandler db;
 	private int breadcrumbId;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,15 +28,14 @@ public class EditLabel extends Activity {
     	EditText editText = (EditText) findViewById(R.id.breadcrumbLabelEditText);
     	String breadcrumbLabel = db.getBreadcrumb(breadcrumbId).getLabel();
     	editText.setHint(breadcrumbLabel);
-
+        
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.edit_label, menu);
-		return false;
-	}
+	
+	  @Override
+	  public void onStart() {
+	    super.onStart();
+	    EasyTracker.getInstance(this).activityStart(this);  // Google analytics.
+	  }
 	
     public void navigateTo(View view) {
     Breadcrumb breadcrumb = db.getBreadcrumb(breadcrumbId);
@@ -59,13 +59,18 @@ public class EditLabel extends Activity {
     	// Delete breadcrumb label in the database
     	Breadcrumb breadcrumb = db.getBreadcrumb(breadcrumbId);
         db.deleteBreadcrumb(breadcrumb);
-    	
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);    
-        finish();}
+    	   
+        finish();
+        }
     
     public void cancel(View view) {
    	    finish();  
     }
+    
+    @Override
+	  public void onStop() {
+	    super.onStop();
+	    EasyTracker.getInstance(this).activityStop(this);  // Google analytics.
+	  }
 
 }

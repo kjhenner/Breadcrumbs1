@@ -9,13 +9,18 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 
 	
@@ -24,9 +29,11 @@ import android.widget.SimpleCursorAdapter;
 public class CollectedBreadcrumbsActivity extends Activity  {
 
 	ListView listview;
-	DatabaseHandler db;
+	DatabaseHandler db;	
 	SimpleCursorAdapter adapter; 
 	Cursor cursor;
+	  
+
 	
 	private static final String TAG="CursorLoader";
 
@@ -39,9 +46,75 @@ public class CollectedBreadcrumbsActivity extends Activity  {
         setContentView(R.layout.activity_collected_breadcrumbs);
         listview = (ListView) findViewById(android.R.id.list);
 
-        
+
+        // Look up the AdView as a resource and load a request.
+        AdView adView = (AdView)this.findViewById(R.id.adView1);
+        AdRequest adRequest = new AdRequest.Builder()
+        .build();
+        adView.loadAd(adRequest);
 		
     }
+    
+    @Override
+	  public void onStart() {
+	    super.onStart();
+	    EasyTracker.getInstance(this).activityStart(this);  // Google analytics.
+	  }
+    
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.collected_breadcrumbs, menu);
+		
+		return true;
+	}
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+         
+        switch (item.getItemId())
+        {
+        case R.id.delete_all:
+            // Single menu item is selected do something
+            // Ex: launching new activity/screen or show alert message
+
+        	AlertDialog.Builder delete_alertbox = new AlertDialog.Builder(CollectedBreadcrumbsActivity.this);
+            
+            // set the message to display
+            delete_alertbox.setMessage("Delete all Breadcrumbs?");
+
+            // set a positive/yes button and create a listener
+            delete_alertbox.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+                // do something when the button is clicked
+                public void onClick(DialogInterface arg0, int arg1) {   
+               db = new DatabaseHandler(getApplicationContext());
+
+               if (listview.getAdapter().getCount() > 0) {
+              	db.deleteAllBreadcrumbs();
+              	cursor = db.getAllLabels();
+                adapter.changeCursor(cursor);}
+                }});
+            
+            // set a negative/no button and create a listener
+            delete_alertbox.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                // do something when the button is clicked
+                public void onClick(DialogInterface arg0, int arg1) {
+                }
+            });
+            if (listview.getAdapter().getCount() > 0) {
+
+            delete_alertbox.show();
+            }
+        	return true;
+ 
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }    
     
     @Override
     protected void onResume() {
@@ -59,7 +132,7 @@ public class CollectedBreadcrumbsActivity extends Activity  {
         		0);
         listview.setAdapter(adapter);
         Log.v(TAG,"ListAdapter is set");
-        
+                
     	
     this.listview.setOnItemClickListener(new OnItemClickListener() {
 
@@ -139,5 +212,11 @@ public class CollectedBreadcrumbsActivity extends Activity  {
     });
 
 }
+    
+    @Override
+	  public void onStop() {
+	    super.onStop();
+	    EasyTracker.getInstance(this).activityStop(this);  // Google analytics.
+	  }
 
 }

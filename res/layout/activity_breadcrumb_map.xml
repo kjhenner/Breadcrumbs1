@@ -7,8 +7,17 @@
     <fragment
         android:id="@+id/map1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:name="com.google.android.gms.maps.MapFragment" />
-    	
-
+	
+    <com.inneractive.api.ads.InneractiveAd
+    android:id="@+id/ad"
+    xmlns:inneractive="http://schemas.android.com/apk/res/com.detimil.breadcrumbs1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    inneractive:appID="Self_Breadcrumbs_Android"
+    inneractive:adType="Banner"
+    inneractive:refreshInterval="120"
+	android:layout_alignParentBottom="true"
+                         />
 </RelativeLayout> 
