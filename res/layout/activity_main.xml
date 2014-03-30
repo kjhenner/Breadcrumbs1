@@ -10,37 +10,35 @@
 
     <Button
         android:id="@+id/button1"
-        style="@style/ButtonText"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="3dp"
-        android:layout_weight="16"
-        android:background="@drawable/custom_button2"
+        android:layout_weight="4"
+        android:background="@drawable/main_buttons"
         android:onClick="dropBreadcrumb"
         android:text="@string/DropBreadcrumb"
+        android:textColor="#FfFfFf"
         android:textSize="48sp" />
 
     <Button
         android:id="@+id/button2"
-        style="@style/ButtonText"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="3dp"
-        android:layout_weight="5"
-        android:background="@drawable/custom_button2"
+        android:layout_weight="1"
+        android:background="@drawable/collected_button"
         android:text="@string/CollectBreadcrumbs"
+        android:textColor="#FfFfFf"
 		android:onClick="collectBreadcrumbs"
-        android:textSize="30sp" />
+        android:textSize="32sp" />
     
     <Button
         android:id="@+id/button3"
-        style="@style/ButtonText"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
-        android:background="@drawable/custom_button_blackout"
+        android:layout_weight="1"
+        android:background="@drawable/view_map_button"
         android:text="@string/ViewMap"
+        android:textColor="#FfFfFf"
 		android:onClick="breadcrumbMap"
-        android:textSize="22sp" />
+        android:textSize="32sp" />
 
 </LinearLayout>

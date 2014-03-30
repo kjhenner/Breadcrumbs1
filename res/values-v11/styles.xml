@@ -8,4 +8,14 @@
         <!-- API 11 theme customizations can go here. -->
     </style>
 
+    
+    <!-- For honeycomb and up -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <style name="MyActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">#2991B7</item>
+    </style>
+
 </resources>
